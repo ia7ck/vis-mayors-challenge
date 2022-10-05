@@ -1,0 +1,31 @@
+[package]
+name = "vis-mayors-challenge"
+version = "0.1.0"
+edition = "2021"
+description = "Mayor's Challenge Visualizer"
+license = "MIT"
+repository = "https://github.com/ia7ck/vis-mayors-challenge"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]  # ???
+
+[dependencies]
+wasm-bindgen = "0.2.83"
+web-sys = { version = "0.3.60", features = ["console"] }
+serde = { version = "1.0.145", features = ["derive"] }
+serde-wasm-bindgen = "0.4.5"
+svg = "0.10.0"
+
+# https://rustwasm.github.io/docs/wasm-pack/cargo-toml-configuration.html
+# GitHub Actions で wasm-pack build を実行するとこういうエラーが出るので一旦 wasm-opt = false にする
+#
+# [INFO]: Installing wasm-bindgen...
+# [INFO]: Optimizing wasm binaries with `wasm-opt`...
+# Error: failed to execute `wasm-opt`: exited with signal: 11 (SIGSEGV) (core dumped)
+#   full command: "/home/runner/.cache/.wasm-pack/wasm-opt-4d7a65327e9363b7/wasm-opt" "/home/runner/work/vis-mayors-challenge/vis-mayors-challenge/web/pkg/vis_mayors_challenge_bg.wasm" "-o" "/home/runner/work/vis-mayors-challenge/vis-mayors-challenge/web/pkg/vis_mayors_challenge_bg.wasm-opt.wasm" "-O"
+# To disable `wasm-opt`, add `wasm-opt = false` to your package metadata in your `Cargo.toml`.
+#
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false

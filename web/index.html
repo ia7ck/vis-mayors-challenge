@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Mayor’s Challenge Visualizer</title>
+</head>
+
+<body>
+  <p>
+    <a href="https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fr" target="_blank" rel="noopener">
+      問題文
+    </a>
+  <details>
+    <summary>説明</summary>
+    <ul>
+      <li>点線で区切られた部分→地区</li>
+      <li>実線で区切られた部分→特別区</li>
+      <li>グレー背景の部分→連結な特別区</li>
+    </ul>
+    <p>
+      <a href="https://github.com/ia7ck/vis-mayors-challenge" target="_blank" rel="noopener">
+        GitHub
+      </a>
+    </p>
+  </details>
+  </p>
+  <div>
+    <label>
+      Input<br>
+      <textarea id="input" rows="6" style="width: 500px;"></textarea>
+    </label>
+  </div>
+  <div>
+    <label>
+      Output<br>
+      <textarea id="output" rows="6" style="width: 500px;"></textarea>
+    </label>
+  </div>
+  <div>
+    <label>
+      <input id="colorful" type="checkbox">colorful
+    </label>
+  </div>
+  <hr>
+  <p id="score">
+    Score = 0
+  </p>
+  <div id="vis"></div>
+  <script type="module">
+    import init, { judge, sample_1_input, sample_1_output } from "./pkg/vis_mayors_challenge.js";
+    (async () => {
+      await init(); // ???
+
+      document.getElementById("input").value = sample_1_input();
+      document.getElementById("output").value = sample_1_output();
+      document.getElementById("score").textContent = "Score = 432650";
+
+      document.getElementById("input").addEventListener("input", update);
+      document.getElementById("output").addEventListener("input", update);
+      document.getElementById("colorful").addEventListener("change", update);
+
+      update();
+
+      function update() {
+        try {
+          const data = judge(document.getElementById("input").value, document.getElementById("output").value, document.getElementById("colorful").checked);
+          document.getElementById("vis").innerHTML = data.svg;
+          document.getElementById("score").textContent = `Score = ${data.score}`;
+        } catch (err) {
+          document.getElementById("score").textContent = "Score = 0";
+          const message = document.createElement("span");
+          message.textContent = err;
+          message.style.marginLeft = '10px';
+          message.style.color = 'red';
+          document.getElementById("score").appendChild(message);
+        }
+      }
+    })();
+  </script>
+</body>
+
+</html>
