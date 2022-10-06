@@ -20,7 +20,6 @@ const L: usize = 20;
 
 const W: usize = 800;
 const H: usize = 800;
-const PADDING: usize = 2;
 #[rustfmt::skip]
 const PALETTE: [&str; L + 1] = [
     "white",
@@ -383,10 +382,10 @@ fn calc_special_area_component_size(input: &Input, output: &Output) -> [usize; L
 fn make_svg(input: &Input, output: &Output, colorful: bool) -> String {
     let line = |x1: usize, y1: usize, x2: usize, y2: usize| {
         element::Line::new()
-            .set("x1", x1 + PADDING)
-            .set("y1", y1 + PADDING)
-            .set("x2", x2 + PADDING)
-            .set("y2", y2 + PADDING)
+            .set("x1", x1)
+            .set("y1", y1)
+            .set("x2", x2)
+            .set("y2", y2)
             .set("stroke", "black")
     };
 
@@ -536,9 +535,9 @@ fn make_svg(input: &Input, output: &Output, colorful: bool) -> String {
     let special_area_component_size = calc_special_area_component_size(input, output);
 
     let mut doc = svg::Document::new()
-        .set("viewBox", (0, 0, W + PADDING * 2, H + PADDING * 2))
-        .set("width", W + PADDING * 2)
-        .set("height", H + PADDING * 2);
+        .set("viewBox", (-2, -2, W + 4, H + 4))
+        .set("width", W)
+        .set("height", H);
 
     // N × N のグリッド
     for i in 0..N {
@@ -568,8 +567,8 @@ fn make_svg(input: &Input, output: &Output, colorful: bool) -> String {
                 "white"
             };
             let rect = element::Rectangle::new()
-                .set("x", W / N * j + PADDING)
-                .set("y", H / N * i + PADDING)
+                .set("x", W / N * j)
+                .set("y", H / N * i)
                 .set("width", W / N)
                 .set("height", H / N)
                 .set("fill", fill)
