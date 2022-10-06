@@ -38,7 +38,8 @@
     </label>
   </div>
   <div>
-    <label>
+    <button id="save-as-png">Save as PNG</button>
+    <label style="margin-left: 8px;">
       <input id="colorful" type="checkbox">colorful
     </label>
   </div>
@@ -60,6 +61,8 @@
       document.getElementById("output").addEventListener("input", update);
       document.getElementById("colorful").addEventListener("change", update);
 
+      document.getElementById("save-as-png").addEventListener("click", saveAsPNG);
+
       update();
 
       function update() {
@@ -75,6 +78,26 @@
           message.style.color = 'red';
           document.getElementById("score").appendChild(message);
         }
+      }
+
+      function saveAsPNG() {
+        const svg = document.getElementById("vis-svg");
+        const svgString = new XMLSerializer().serializeToString(svg);
+
+        const canvas = document.createElement("canvas");
+        canvas.width = svg.width.baseVal.value;
+        canvas.height = svg.height.baseVal.value;
+        const ctx = canvas.getContext("2d");
+
+        const image = new Image;
+        image.addEventListener("load", () => {
+          ctx.drawImage(image, 0, 0);
+          const a = document.createElement("a");
+          a.href = canvas.toDataURL("image/png");
+          a.setAttribute("download", "vis_mayors_challenge.png");
+          a.click();
+        });
+        image.src = "data:image/svg+xml;charset=utf-8;base64," + btoa(svgString);
       }
     })();
   </script>

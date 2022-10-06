@@ -535,6 +535,7 @@ fn make_svg(input: &Input, output: &Output, colorful: bool) -> String {
     let special_area_component_size = calc_special_area_component_size(input, output);
 
     let mut doc = svg::Document::new()
+        .set("id", "vis-svg")
         .set("viewBox", (-2, -2, W + 4, H + 4))
         .set("width", W)
         .set("height", H);
