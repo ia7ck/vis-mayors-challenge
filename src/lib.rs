@@ -426,28 +426,28 @@ fn make_svg(input: &Input, output: &Output, colorful: bool) -> String {
                 if x + 1 < N {
                     push!(y, x + 1);
                 }
-                if y == 0 || input.c[y - 1][x] != input.c[i][j] {
+                if y == 0 || input.c[y - 1][x] != c_ij {
                     area_border.push(
                         line(W / N * x, H / N * y, W / N * (x + 1), H / N * y)
                             .set("stroke-dasharray", "2, 4, 4, 4, 2")
                             .set("stroke-linecap", "round"),
                     );
                 }
-                if x == 0 || input.c[y][x - 1] != input.c[i][j] {
+                if x == 0 || input.c[y][x - 1] != c_ij {
                     area_border.push(
                         line(W / N * x, H / N * y, W / N * x, H / N * (y + 1))
                             .set("stroke-dasharray", "2, 4, 4, 4, 2")
                             .set("stroke-linecap", "round"),
                     );
                 }
-                if y + 1 == N || input.c[y + 1][x] != input.c[i][j] {
+                if y + 1 == N || input.c[y + 1][x] != c_ij {
                     area_border.push(
                         line(W / N * x, H / N * (y + 1), W / N * (x + 1), H / N * (y + 1))
                             .set("stroke-dasharray", "2, 4, 4, 4, 2")
                             .set("stroke-linecap", "round"),
                     );
                 }
-                if x + 1 == N || input.c[y][x + 1] != input.c[i][j] {
+                if x + 1 == N || input.c[y][x + 1] != c_ij {
                     area_border.push(
                         line(W / N * (x + 1), H / N * y, W / N * (x + 1), H / N * (y + 1))
                             .set("stroke-dasharray", "2, 4, 4, 4, 2")
