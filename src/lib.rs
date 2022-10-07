@@ -14,6 +14,8 @@ macro_rules! log {
     }
 }
 
+// https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_fr
+
 const N: usize = 50;
 const K: usize = 400;
 const L: usize = 20;
