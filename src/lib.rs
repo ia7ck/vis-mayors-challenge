@@ -563,7 +563,7 @@ fn make_svg(input: &Input, output: &Output, colorful: bool) -> String {
             let fill = if colorful {
                 PALETTE[d[i][j]]
             } else if special_area_component_size[d[i][j]] == 1 {
-                "whitesmoke"
+                "gainsboro"
             } else {
                 "white"
             };
