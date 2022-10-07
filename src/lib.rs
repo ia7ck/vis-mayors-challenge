@@ -185,25 +185,11 @@ fn check_input(input: &Input) -> Result<(), String> {
         }
     }
     while let Some((i, j)) = que.pop_front() {
-        macro_rules! push {
-            ($ni: expr, $nj: expr) => {
-                if !visited[$ni][$nj] && input.c[$ni][$nj] >= 1 {
-                    visited[$ni][$nj] = true;
-                    que.push_back(($ni, $nj));
-                }
-            };
-        }
-        if i >= 1 {
-            push!(i - 1, j);
-        }
-        if j >= 1 {
-            push!(i, j - 1);
-        }
-        if i + 1 < N {
-            push!(i + 1, j);
-        }
-        if j + 1 < N {
-            push!(i, j + 1);
+        for (ni, nj) in adjacent_cells(i, j).iter().filter_map(|&p| p) {
+            if !visited[ni][nj] && input.c[ni][nj] >= 1 {
+                visited[ni][nj] = true;
+                que.push_back((ni, nj));
+            }
         }
     }
     let mut visited_area = 0;
@@ -250,26 +236,12 @@ fn check_input(input: &Input) -> Result<(), String> {
             visited_area[c_ij] += 1;
             que.push_back((i, j));
             while let Some((y, x)) = que.pop_front() {
-                macro_rules! push {
-                    ($ny: expr, $nx: expr) => {
-                        if !visited[$ny][$nx] && input.c[$ny][$nx] == c_ij {
-                            visited[$ny][$nx] = true;
-                            visited_area[input.c[$ny][$nx]] += 1;
-                            que.push_back(($ny, $nx));
-                        }
-                    };
-                }
-                if y >= 1 {
-                    push!(y - 1, x);
-                }
-                if x >= 1 {
-                    push!(y, x - 1);
-                }
-                if y + 1 < N {
-                    push!(y + 1, x);
-                }
-                if x + 1 < N {
-                    push!(y, x + 1);
+                for (ny, nx) in adjacent_cells(y, x).iter().filter_map(|&p| p) {
+                    if !visited[ny][nx] && input.c[ny][nx] == c_ij {
+                        visited[ny][nx] = true;
+                        visited_area[input.c[ny][nx]] += 1;
+                        que.push_back((ny, nx));
+                    }
                 }
             }
             assert!(visited_area[c_ij] <= total_area[c_ij]);
@@ -355,25 +327,11 @@ fn calc_special_area_component_size(input: &Input, output: &Output) -> [usize; L
             let mut que = VecDeque::new();
             que.push_back((i, j));
             while let Some((y, x)) = que.pop_front() {
-                macro_rules! push {
-                    ($ny: expr, $nx: expr) => {
-                        if !visited[$ny][$nx] && output.area[input.c[$ny][$nx]] == d {
-                            visited[$ny][$nx] = true;
-                            que.push_back(($ny, $nx));
-                        }
-                    };
-                }
-                if y >= 1 {
-                    push!(y - 1, x);
-                }
-                if x >= 1 {
-                    push!(y, x - 1);
-                }
-                if y + 1 < N {
-                    push!(y + 1, x);
-                }
-                if x + 1 < N {
-                    push!(y, x + 1);
+                for (ny, nx) in adjacent_cells(y, x).iter().filter_map(|&p| p) {
+                    if !visited[ny][nx] && output.area[input.c[ny][nx]] == d {
+                        visited[ny][nx] = true;
+                        que.push_back((ny, nx));
+                    }
                 }
             }
         }
@@ -406,25 +364,11 @@ fn make_svg(input: &Input, output: &Output, colorful: bool) -> String {
             visited[i][j] = true;
             que.push_back((i, j));
             while let Some((y, x)) = que.pop_front() {
-                macro_rules! push {
-                    ($ny: expr, $nx: expr) => {
-                        if !visited[$ny][$nx] && input.c[$ny][$nx] == c_ij {
-                            visited[$ny][$nx] = true;
-                            que.push_back(($ny, $nx));
-                        }
-                    };
-                }
-                if y >= 1 {
-                    push!(y - 1, x);
-                }
-                if x >= 1 {
-                    push!(y, x - 1);
-                }
-                if y + 1 < N {
-                    push!(y + 1, x);
-                }
-                if x + 1 < N {
-                    push!(y, x + 1);
+                for (ny, nx) in adjacent_cells(y, x).iter().filter_map(|&p| p) {
+                    if !visited[ny][nx] && input.c[ny][nx] == c_ij {
+                        visited[ny][nx] = true;
+                        que.push_back((ny, nx));
+                    }
                 }
                 if y == 0 || input.c[y - 1][x] != c_ij {
                     area_border.push(
@@ -482,25 +426,11 @@ fn make_svg(input: &Input, output: &Output, colorful: bool) -> String {
             let mut que = VecDeque::new();
             que.push_back((i, j));
             while let Some((y, x)) = que.pop_front() {
-                macro_rules! push {
-                    ($ny: expr, $nx: expr) => {
-                        if !visited[$ny][$nx] && d[$ny][$nx] == d[i][j] {
-                            visited[$ny][$nx] = true;
-                            que.push_back(($ny, $nx));
-                        }
-                    };
-                }
-                if y >= 1 {
-                    push!(y - 1, x);
-                }
-                if x >= 1 {
-                    push!(y, x - 1);
-                }
-                if y + 1 < N {
-                    push!(y + 1, x);
-                }
-                if x + 1 < N {
-                    push!(y, x + 1);
+                for (ny, nx) in adjacent_cells(y, x).iter().filter_map(|&p| p) {
+                    if !visited[ny][nx] && d[ny][nx] == d[i][j] {
+                        visited[ny][nx] = true;
+                        que.push_back((ny, nx));
+                    }
                 }
                 if y == 0 || d[y - 1][x] != d[i][j] {
                     special_area_border.push(
@@ -592,9 +522,19 @@ fn make_svg(input: &Input, output: &Output, colorful: bool) -> String {
     doc.to_string()
 }
 
+// 上, 左, 下, 右
+fn adjacent_cells(i: usize, j: usize) -> [Option<(usize, usize)>; 4] {
+    [
+        if i >= 1 { Some((i - 1, j)) } else { None },
+        if j >= 1 { Some((i, j - 1)) } else { None },
+        if i + 1 < N { Some((i + 1, j)) } else { None },
+        if j + 1 < N { Some((i, j + 1)) } else { None },
+    ]
+}
+
 #[cfg(test)]
 mod tests {
-    use super::{calc_score, parse_input, parse_output, sample_case};
+    use super::{adjacent_cells, calc_score, parse_input, parse_output, sample_case};
 
     #[test]
     fn sample_1_test() {
@@ -606,6 +546,34 @@ mod tests {
                 &parse_output(sample_case::SAMPLE_1_OUTPUT).unwrap()
             ),
             432650
+        );
+    }
+
+    #[test]
+    fn adjacent_cells_test() {
+        // @x..
+        // x...
+        // ....
+        assert_eq!(
+            adjacent_cells(0, 0),
+            [None, None, Some((1, 0)), Some((0, 1))]
+        );
+
+        // x@x.
+        // .x..
+        // ....
+        assert_eq!(
+            adjacent_cells(0, 1),
+            [None, Some((0, 0)), Some((1, 1)), Some((0, 2))]
+        );
+
+        // .x..
+        // x@x.
+        // .x..
+        // ....
+        assert_eq!(
+            adjacent_cells(1, 1),
+            [Some((0, 1)), Some((1, 0)), Some((2, 1)), Some((1, 2))]
         );
     }
 }
