@@ -266,7 +266,7 @@ fn parse_output(output: &str) -> Result<Output, String> {
         let y = line
             .parse::<usize>()
             .map_err(|err| format!("invalid output: Line {}: {}", i + 1, err))?;
-        if y > L {
+        if !(1 <= y && y <= L) {
             return Err(format!("invalid output: Line {}", i + 1));
         }
         area[i + 1] = y;
