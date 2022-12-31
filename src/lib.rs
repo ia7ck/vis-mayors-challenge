@@ -122,16 +122,16 @@ fn parse_input(input: &str) -> Result<Input, String> {
 
     let mut ab = [(0, 0); K + 1];
     for i in 1..=K {
-        let line = lines.get(i).ok_or_else(|| err_format!(i))?;
+        let line = lines.get(i).ok_or_else(|| err_format!(i + 1))?;
 
-        let a = line.split(' ').nth(0).ok_or_else(|| err_format!(i))?;
-        let b = line.split(' ').nth(1).ok_or_else(|| err_format!(i))?;
+        let a = line.split(' ').nth(0).ok_or_else(|| err_format!(i + 1))?;
+        let b = line.split(' ').nth(1).ok_or_else(|| err_format!(i + 1))?;
 
-        let a = a.parse::<u64>().map_err(|err| err_format!(i, err))?;
-        let b = b.parse::<u64>().map_err(|err| err_format!(i, err))?;
+        let a = a.parse::<u64>().map_err(|err| err_format!(i + 1, err))?;
+        let b = b.parse::<u64>().map_err(|err| err_format!(i + 1, err))?;
 
         if !(50000 <= a && a <= 100000 && 1000 <= b && b <= 2000) {
-            return Err(err_format!(i));
+            return Err(err_format!(i + 1));
         }
 
         ab[i] = (a, b);
@@ -142,13 +142,13 @@ fn parse_input(input: &str) -> Result<Input, String> {
         let line = lines
             .get(i)
             .map(|l| l.split(' ').collect::<Vec<_>>())
-            .ok_or_else(|| err_format!(i))?;
+            .ok_or_else(|| err_format!(i + 1))?;
 
         for j in 0..N {
-            let x = line.get(j).ok_or_else(|| err_format!(i))?;
-            let x = x.parse::<usize>().map_err(|err| err_format!(i, err))?;
+            let x = line.get(j).ok_or_else(|| err_format!(i + 1))?;
+            let x = x.parse::<usize>().map_err(|err| err_format!(i + 1, err))?;
             if x > K {
-                return Err(err_format!(i));
+                return Err(err_format!(i + 1));
             }
             c[i - K - 1][j] = x;
         }
